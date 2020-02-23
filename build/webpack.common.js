@@ -58,9 +58,9 @@ module.exports = {
         ],
     },
     output: {
-        filename: 'main.js',
         path: path.resolve(__dirname, '../dist'),
     },
+    performance: false,
     plugins: [new HtmlWebpackPlugin({
         template: './src/index.html'
     }),

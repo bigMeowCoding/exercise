@@ -26,16 +26,19 @@ const devConfig = {
                 defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
-
+                    name:'vendors'
                 },
                 default: {
                     minChunks: 2,
                     priority: -20,
                     reuseExistingChunk: true,
-
                 }
             }
         }
+    },
+    output:{
+        filename: '[name].js',
+        chunkFilename: "[name].chunk.js",
     }
 };
 
