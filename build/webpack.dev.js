@@ -8,7 +8,9 @@ const devConfig = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         port: 8081,
-        open: true
+        open: true,
+        overlay:true,
+
     },
     optimization: {
         usedExports: true,
