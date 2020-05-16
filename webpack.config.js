@@ -30,6 +30,14 @@ entry: {
                     },
                 ],
             },
+            {
+                test: /\.jpeg$/,
+                use: [
+                    {
+                        loader: 'url-loader', // creates style nodes from JS strings
+                    }
+                ],
+            },
         ],
     },
 
