@@ -76,7 +76,7 @@ module.exports = {
 
   devServer: {
     contentBase: path.join(__dirname, "dist"),
-    port: 8081,
+    port: 7777,
   },
   output: {
     filename: "main.js",

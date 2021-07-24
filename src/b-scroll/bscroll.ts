@@ -1,10 +1,14 @@
-interface ScrollOption extends Record<string, any> {
+import { momentum } from "./utils";
+
+export interface ScrollOption extends Record<string, any> {
   scrollX: boolean;
   scrollY: boolean;
+  momentum: boolean;
 }
 export const DefaultOption = {
   scrollY: true,
   scrollX: false,
+  momentum: true,
 };
 export class BScroll {
   touch: {
@@ -21,6 +25,10 @@ export class BScroll {
   private maxScrollX = 0;
   private distX: number;
   private distY: number;
+  private startTime: number;
+  private endTime: number;
+  private startX: number;
+  private startY: number;
   constructor(el: string | HTMLElement | null, option: ScrollOption) {
     if (!el) {
       return;
@@ -42,21 +50,24 @@ export class BScroll {
       this.contentEl = content as HTMLElement;
       if (this.option.scrollX) {
         setTimeout(() => {
-          this.maxScrollX = this.contentEl.scrollWidth - el.clientWidth;
+          this.maxScrollX = el.clientWidth - this.contentEl.scrollWidth;
         });
       }
       if (this.option.scrollY) {
         setTimeout(() => {
-          this.maxScrollY = this.contentEl.scrollHeight - el.clientHeight;
-          console.log(this.maxScrollY);
+          this.maxScrollY = el.clientHeight - this.contentEl.scrollHeight;
         });
       }
       content.addEventListener(
         "touchstart",
         (e) => {
+          this.startTime = +new Date();
           this.touching = true;
           this.distX = 0;
           this.distY = 0;
+          this.startX = this.touch.x;
+          this.startY = this.touch.y;
+
           const touches = (e as TouchEvent).touches;
           if (this.option?.scrollX) {
             this.touch.beginX = touches[0].pageX;
@@ -89,7 +100,7 @@ export class BScroll {
             // console.log("touchy", this.touch.y, delta, beginY);
             // console.log(y);
             newY = y + delta;
-            if (newY > 0 || newY < -1 * this.maxScrollY) {
+            if (newY > 0 || newY < this.maxScrollY) {
               newY = y + delta / 3;
             }
             this.touch.beginY = pageY;
@@ -111,13 +122,42 @@ export class BScroll {
         (e) => {
           console.log("touchend", e);
           this.touching = false;
+          this.endTime = +new Date();
+
           this.resetPointer(this.touch.y, this.touch.x);
+          let newY = this.touch.y,
+            newX = this.touch.x;
+          const duration = this.endTime - this.startTime;
+          if (this.option?.momentum && duration < 300) {
+            if (this.option.scrollY) {
+              const ret = momentum(
+                this.touch.y,
+                this.startY || 0,
+                duration,
+                this.maxScrollY,
+                this.contentEl?.parentElement?.clientHeight || 0
+              );
+              console.log(ret);
+              newY = ret.destination;
+              this.transitionTime(ret.duration);
+            }
+          }
+          if (newY !== this.touch.y || newX !== this.touch.x) {
+            this.translate(newX, newY);
+          }
         },
         false
       );
     }
   }
-
+  private transitionTime(time = 0) {
+    if (this.contentEl) {
+      // transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      // transition-property: transform;
+      // transition-duration: 0ms;
+      this.contentEl.style.transitionDuration = `${time}ms`;
+    }
+  }
   private translate(x: number, y: number) {
     if (this.contentEl) {
       // transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -128,7 +168,6 @@ export class BScroll {
       this.touch.y = y;
     }
   }
-
   private resetPointer(pageY: number, pageX: number) {
     let x = pageX,
       y = pageY;
@@ -137,7 +176,7 @@ export class BScroll {
       console.log("delta", pageY);
       if (delta > 0) {
         y = 0;
-      } else if (delta < -1 * this.maxScrollY) {
+      } else if (delta < this.maxScrollY) {
         y = -1 * this.maxScrollY;
       }
       // if (y && this.contentEl) {
