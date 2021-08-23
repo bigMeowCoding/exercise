@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --mode development --open --hot",
     "test": "mocha -r ts-node/register test/**/*.ts",
     "runts": "tsc && node ./dist/index.js",
-    "build": "webpack  --mode=development"
+    "build": "webpack  --mode=development",
+    "babel": "ts-node ./src/utils/babel-convert.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
