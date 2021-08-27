@@ -3,44 +3,8 @@ const path = require("path"),
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-    mode: "development",
-    devtool: 'source-map',
-entry: {
-        app: [
-            './src/index.js',
-        ],
-    },
-    module: {
-        rules: [
-            {
-                test: /\.html$/i,
-                loader: 'html-loader',
-            },
-            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-            {
-                test: /\.less$/,
-                use: [
-                    {
-                        loader: 'style-loader', // creates style nodes from JS strings
-                    },
-                    {
-                        loader: 'css-loader', // translates CSS into CommonJS
-                    },
-                    {
-                        loader: 'less-loader', // compiles Less to CSS
-                    },
-                ],
-            },
-            {
-                test: /\.jpeg$/,
-                use: [
-                    {
-                        loader: 'url-loader', // creates style nodes from JS strings
-                    }
-                ],
-            },
-        ],
-    },
+  mode: "development",
+  devtool: "source-map",
   entry: {
     index: "./src/index.tsx",
   },
@@ -111,11 +75,10 @@ entry: {
       // },
     ],
   },
-
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     port: 7777,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
   },
   output: {
     filename: "main.js",
