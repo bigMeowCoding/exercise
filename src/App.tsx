@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Counter } from "./counter/counter";
+import Link from "./component/link";
 
 const App = () => {
   return (
     <>
-      <Counter />
+      <Link page={"wwww.baidu.com"}>link</Link>
     </>
   );
 };
