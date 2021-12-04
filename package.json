@@ -69,6 +69,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "arale-qrcode": "^3.0.5",
+    "better-scroll": "^2.4.2",
     "chai": "^4.3.4",
     "core-js": "3",
     "mocha": "^8.4.0",
