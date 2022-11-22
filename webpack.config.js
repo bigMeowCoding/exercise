@@ -1,10 +1,15 @@
 const path = require("path"),
   HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  devtool: "source-map",
+  // for Webpack 5
+  optimization: {
+    realContentHash: true,
+  },
   entry: {
     index: "./src/index.tsx",
   },
@@ -55,13 +60,16 @@ module.exports = {
         },
       },
       {
-        test: /\.(css|less|scss|sss)$/,
+        test: /\.(css|less|scss|sass)$/,
         use: [
-          {
-            loader: "style-loader", // creates style nodes from JS strings
-          },
+
+          MiniCssExtractPlugin.loader,
+
           {
             loader: "css-loader", // translates CSS into CommonJS
+          },
+          {
+            loader: "postcss-loader"
           },
           {
             loader: "sass-loader", // compiles Less to CSS
@@ -76,18 +84,20 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
     port: 3000,
-    disableHostCheck: true,
   },
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
   },
   plugins: [
+    new MiniCssExtractPlugin(),
+
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+
+
     new CleanWebpackPlugin(),
   ],
 };

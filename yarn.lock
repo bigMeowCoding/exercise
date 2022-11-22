@@ -6303,6 +6303,11 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "http://npm.weimob.com:80/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=
+
 lodash-mock@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/lodash-mock/download/lodash-mock-1.2.0.tgz#38d1434a9b14640f04eb61debcc815f0c9775e0f"
